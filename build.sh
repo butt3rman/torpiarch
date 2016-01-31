@@ -24,7 +24,7 @@ set -eu
 touch /etc/sudoers
 SUDOERS=/etc/sudoers
 chmod 0640 $SUDOERS
-echo "alarm        ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
+echo "alarm        ALL=(ALL) NOPASSWD: ALL" > $SUDOERS
 chmod 0440 $SUDOERS
 
 # update pacman
