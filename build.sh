@@ -1,20 +1,5 @@
 #!/bin/bash
 set -eu
-#  ___  ___  ___ _____ _   _
-# | _ \/ _ \| _ \_   _/_\ | | of ._ o  
-# |  _/ (_) |   / | |/ _ \| |__  |_)|  
-# |_|  \___/|_|_\ |_/_/ \_\____| |
-#
-# Licensed GPLv3
-#
-# (c) 2013 the grugq <the.grugq@gmail.com>
-
-# See the README.md for indepth details.
-#
-# Based on the RaspberryPi Arch image from here:
-#  http://www.raspberrypi.org/downloads
-# specifically:
-#  http://archlinuxarm.org/os/rpi/archlinux-hf-2013-06-15.img.zip
 
 # PORTAL configuration overview
 #  
@@ -22,13 +7,11 @@ set -eu
 #   eth1: 172.16.0.1
 #        * anything from here can only reach 9050 (Tor proxy) or,
 #        * the transparent Tor proxy 
-#    USB: ???.
+#    USB: eth0
 #        * Internet access. You're on your own
-#        * No services exposed here
 
 # STEP 1 !!! 
 #   configure Internet access, we'll neet to install some basic tools.
-
 
 # update pacman
 pacman -Syu --needed --noconfirm
