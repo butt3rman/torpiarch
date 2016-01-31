@@ -17,19 +17,18 @@ set -eu
 #    USB: eth0
 #        * Internet access. You're on your own
 
-# 
 # check your internet connection, as we need to download prerequisites
 
 # We add alarm user for sudoers as i friggin couldnt fix nobody to use makepkg
 touch /etc/sudoers
 SUDOERS=/etc/sudoers
 chmod 0640 $SUDOERS
-echo "alarm        ALL=(ALL) NOPASSWD: ALL" > $SUDOERS
+echo "alarm        ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
 chmod 0440 $SUDOERS
 
 # update pacman
 pacman -Syu --needed --noconfirm
-pacman -S --needed --noconfirm base-devel zsh grml-zsh-config vim htop lsof strace ntp dnsmasq tor polipo rng-tools
+pacman -S --needed --noconfirm base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo rng-tools
 
 #Verifica se yaourt esta instalado
 verify=$(which yaourt)
@@ -110,8 +109,8 @@ __TORRC__
 
 #
 ## Enable eth0 - to get dhcp lease from router
-cat > /etc/netctl/ethernetdhcp << __ETHCONF1__
-Interface=eth0
+cat > /etc/conf.d/internet << __ETHCONF1__
+interface=eth0
 Connection=ethernet
 IP=dhcp
 __ETHCONF1__
@@ -123,6 +122,28 @@ address=172.16.0.1
 netmask=24
 broadcast=172.16.0.255
 __ETHCONF__
+
+cat > /etc/systemd/system/internet.service << __ETHRC1__
+[Unit]
+Description=WDHCP Internet Connection
+Wants=internet.target
+Before=internet.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=/etc/conf.d/internet
+ExecStart=/sbin/ip link set dev \${interface} up
+#ExecStart=/usr/sbin/wpa_supplicant -B -i \${interface} -c /etc/wpa_supplicant.conf # Remove this for wired connections
+ExecStart=/sbin/ip addr add \${address}/\${netmask} broadcast \${broadcast} dev \${interface}
+#ExecStart=/sbin/ip route add default via \${gateway}
+ 
+ExecStop=/sbin/ip addr flush dev \${interface}
+ExecStop=/sbin/ip link set dev \${interface} down
+
+[Install]
+WantedBy=multi-user.target
+__ETHRC1__
 
 cat > /etc/systemd/system/network.service << __ETHRC__
 [Unit]
@@ -146,11 +167,8 @@ ExecStop=/sbin/ip link set dev \${interface} down
 WantedBy=multi-user.target
 __ETHRC__
 
-netctl stop ethernetdhcp
-netctl start ethernetdhcp
-netctl enable ethernetdhcp
-netctl reenable ethernetdhcp
 
+systemctl enable internet.service
 systemctl enable network.service
 systemctl enable ntpd.service
 
