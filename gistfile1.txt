@@ -32,7 +32,7 @@ set -eu
 
 # update pacman
 pacman -Syu --needed --noconfirm
-sudo pacman -Sy --needed --noconfirm base-devel
+pacman -Sy --needed --noconfirm base-devel
 pacman -S --needed --noconfirm zsh grml-zsh-config vim htop lsof strace
 pacman -S --needed --noconfirm dnsmasq
 pacman -S --needed --noconfirm tor
@@ -48,14 +48,14 @@ curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
 tar -zxf package-query.tar.gz
 cd package-query
 makepkg -s --noconfirm
-sudo pacman -U --noconfirm package-query-*.pkg.tar.xz
+pacman -U --noconfirm package-query-*.pkg.tar.xz
 
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
 tar -zxf yaourt.tar.gz
 cd yaourt
 makepkg -s --noconfirm
-sudo pacman -U --noconfirm yaourt-*.pkg.tar.xz
+pacman -U --noconfirm yaourt-*.pkg.tar.xz
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
