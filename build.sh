@@ -151,11 +151,10 @@ ExecStop=/sbin/ip link set dev \${interface} down
 WantedBy=multi-user.target
 __ETHRC__
 
-systemctl enable network.service
-netctl stop ethernetdhcp
 netctl enable ethernetdhcp
-netctl reenable ethernetdhcp
-# should already be enabled
+systemctl enable dhcpd@eth0.service
+
+systemctl enable network.service
 systemctl enable ntpd.service
 
 # patch ntp-wait: strange unresolved bug
