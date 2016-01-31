@@ -134,10 +134,8 @@ Type=oneshot
 RemainAfterExit=yes
 EnvironmentFile=/etc/conf.d/internet
 ExecStart=/sbin/ip link set dev \${interface} up
-#ExecStart=/usr/sbin/wpa_supplicant -B -i \${interface} -c /etc/wpa_supplicant.conf # Remove this for wired connections
 ExecStart=/sbin/ip addr add \${address}/\${netmask} broadcast \${broadcast} dev \${interface}
-#ExecStart=/sbin/ip route add default via \${gateway}
- 
+
 ExecStop=/sbin/ip addr flush dev \${interface}
 ExecStop=/sbin/ip link set dev \${interface} down
 
@@ -156,10 +154,8 @@ Type=oneshot
 RemainAfterExit=yes
 EnvironmentFile=/etc/conf.d/network
 ExecStart=/sbin/ip link set dev \${interface} up
-#ExecStart=/usr/sbin/wpa_supplicant -B -i \${interface} -c /etc/wpa_supplicant.conf # Remove this for wired connections
 ExecStart=/sbin/ip addr add \${address}/\${netmask} broadcast \${broadcast} dev \${interface}
-#ExecStart=/sbin/ip route add default via \${gateway}
- 
+
 ExecStop=/sbin/ip addr flush dev \${interface}
 ExecStop=/sbin/ip link set dev \${interface} down
 
