@@ -54,7 +54,7 @@ pacman -U --noconfirm package-query-*.pkg.tar.xz
 cd "$workdir"
 cd yaourt
 sudo -u alarm makepkg -s --noconfirm
-makepkgpacman -U --noconfirm yaourt-*.pkg.tar.xz
+pacman -U --noconfirm yaourt-*.pkg.tar.xz
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
