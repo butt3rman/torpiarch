@@ -35,10 +35,14 @@ pacman -S --needed --noconfirm dnsmasq
 pacman -S --needed --noconfirm tor
 pacman -S --needed --noconfirm polipo
 pacman -Sy --needed --noconfirm rng-tools
+
+#Verifica se yaourt esta instalado
 verify=$(which yaourt)
-if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/sbin/yaourt" ] || [ "$verify" == "/bin/yaourt" ]; then
-echo 'Yaourt is already installed'
+if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/sbin/yaourt" ]; then
+echo '-> [OK] Yaourt is installed ...'
 else
+echo '-> Yaourt is not installed. :( '
+echo '-> Installing Yaourt'
 workdir=/tmp/install_yaourt
 rm -rf "$workdir"
 mkdir -p "$workdir"
@@ -57,6 +61,7 @@ cd yaourt
 sudo -u alarm makepkg -s --noconfirm
 pacman -U --noconfirm yaourt-*.pkg.tar.xz
 fi
+
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
 
@@ -147,7 +152,7 @@ WantedBy=multi-user.target
 __ETHRC__
 
 systemctl enable network.service
-
+netctl stop ethernetdhcp
 netctl enable ethernetdhcp
 netctl reenable ethernetdhcp
 # should already be enabled
