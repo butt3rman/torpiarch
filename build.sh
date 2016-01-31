@@ -146,7 +146,7 @@ WantedBy=multi-user.target
 __ETHRC__
 
 systemctl enable network.service
-netctl start ethernet-dhcp
+
 netctl enable ethernet-dhcp
 netctl reenable ethernet-dhcp
 # should already be enabled
