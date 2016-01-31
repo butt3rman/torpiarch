@@ -34,7 +34,7 @@ pacman -S --needed --noconfirm zsh grml-zsh-config vim htop lsof strace
 pacman -S --needed --noconfirm dnsmasq
 pacman -S --needed --noconfirm tor
 pacman -S --needed --noconfirm polipo
-
+pacman -Sy --needed --noconfirm rng-tools
 workdir=/tmp/install_yaourt
 
 rm -rf "$workdir"
@@ -58,7 +58,7 @@ pacman -U --noconfirm yaourt-*.pkg.tar.xz
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
-pacman -Sy rng-tools
+
 # Tell rngd to seed /dev/random using the hardware rng
 echo 'RNGD_OPTS="-o /dev/random -r /dev/hwrng"' > /etc/conf.d/rngd
 systemctl enable rngd
