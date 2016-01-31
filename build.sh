@@ -35,12 +35,14 @@ pacman -S --needed --noconfirm dnsmasq
 pacman -S --needed --noconfirm tor
 pacman -S --needed --noconfirm polipo
 pacman -Sy --needed --noconfirm rng-tools
+verify=$(which yaourt)
+if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/sbin/yaourt" ] || [ "$verify" == "/bin/yaourt" ]; then
+echo 'Yaourt is already installed'
+else
 workdir=/tmp/install_yaourt
-
 rm -rf "$workdir"
 mkdir -p "$workdir"
 chown alarm -R "$workdir"
-
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
@@ -50,12 +52,11 @@ chown alarm -R "$workdir"
 cd package-query
 sudo -u alarm makepkg -s --noconfirm
 pacman -U --noconfirm package-query-*.pkg.tar.xz
-
 cd "$workdir"
 cd yaourt
 sudo -u alarm makepkg -s --noconfirm
 pacman -U --noconfirm yaourt-*.pkg.tar.xz
-
+fi
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
 
