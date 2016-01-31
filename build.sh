@@ -1,9 +1,12 @@
 #!/bin/bash
 set -eu
 
-# PORTAL configuration overview
+# This script needs to be run as root
+
+# TorPI Raspberry Settings Overview
 #  
-# ((Internet))---[USB]<[Pi]>[eth1]----((LAN))
+# ((Internet)) --- [eth0]
+# ((LAN))      --- [eth1] > [USB]
 #   eth1: 172.16.0.1
 #        * anything from here can only reach 9050 (Tor proxy) or,
 #        * the transparent Tor proxy 
@@ -11,7 +14,13 @@ set -eu
 #        * Internet access. You're on your own
 
 # STEP 1 !!! 
-#   configure Internet access, we'll neet to install some basic tools.
+# configure Internet access, we'll neet to install some basic tools.
+# Default password for root is root / Default password for alarm user is alarm
+
+SUDOERS=/etc/sudoers
+chmod 0640 $SUDOERS
+echo "alarm        ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
+chmod 0440 $SUDOERS
 
 # update pacman
 pacman -Syu --needed --noconfirm
@@ -25,26 +34,20 @@ workdir=/tmp/install_yaourt
 
 rm -rf "$workdir"
 mkdir -p "$workdir"
-chgrp -R nobody "$workdir"
-chmod g+ws "$workdir"
-setfacl -m u::rwx,g::rwx "$workdir"
-setfacl -d --set u::rwx,g::rwx,o::- "$workdir"
 
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
 tar -zxf package-query.tar.gz
-chmod -R g+w "$workdir"
 cd package-query
-sudo -u nobody makepkg -s --noconfirm
+sudo -u alarm makepkg -s --noconfirm
 pacman -U --noconfirm package-query-*.pkg.tar.xz
 
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
 tar -zxf yaourt.tar.gz
-chmod -R g+w "$workdir"
 cd yaourt
-sudo -u nobody makepkg -s --noconfirm
-pacman -U --noconfirm yaourt-*.pkg.tar.xz
+sudo -u alarm makepkg -s --noconfir
+makepkgpacman -U --noconfirm yaourt-*.pkg.tar.xz
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
