@@ -29,12 +29,7 @@ chmod 0440 $SUDOERS
 
 # update pacman
 pacman -Syu --needed --noconfirm
-pacman -Sy --needed --noconfirm base-devel
-pacman -S --needed --noconfirm zsh grml-zsh-config vim htop lsof strace
-pacman -S --needed --noconfirm dnsmasq
-pacman -S --needed --noconfirm tor
-pacman -S --needed --noconfirm polipo
-pacman -Sy --needed --noconfirm rng-tools
+pacman -S --needed --noconfirm base-devel zsh grml-zsh-config vim htop lsof strace ntp dnsmasq tor polipo rng-tools
 
 #Verifica se yaourt esta instalado
 verify=$(which yaourt)
@@ -151,8 +146,10 @@ ExecStop=/sbin/ip link set dev \${interface} down
 WantedBy=multi-user.target
 __ETHRC__
 
+netctl stop ethernetdhcp
+netctl start ethernetdhcp
 netctl enable ethernetdhcp
-systemctl enable dhcpd@eth0.service
+netctl reenable ethernetdhcp
 
 systemctl enable network.service
 systemctl enable ntpd.service
