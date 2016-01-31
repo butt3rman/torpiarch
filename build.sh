@@ -43,14 +43,15 @@ chown alarm -R "$workdir"
 
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
+curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
 tar -zxf package-query.tar.gz
+tar -zxf yaourt.tar.gz
+chown alarm -R "$workdir"
 cd package-query
 sudo -u alarm makepkg -s --noconfirm
 pacman -U --noconfirm package-query-*.pkg.tar.xz
 
 cd "$workdir"
-curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
-tar -zxf yaourt.tar.gz
 cd yaourt
 sudo -u alarm makepkg -s --noconfirm
 makepkgpacman -U --noconfirm yaourt-*.pkg.tar.xz
