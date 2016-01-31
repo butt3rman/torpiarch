@@ -3,7 +3,11 @@ set -eu
 
 # This script needs to be run as root
 
-# TorPI Raspberry Settings Overview
+# You need to have the latest ArchLinux for Pi 
+# http://archlinuxarm.org/os/ArchLinuxARM-rpi-latest.tar.gz
+# Default password for root is root / Default password for alarm user is alarm
+
+# PORTAL configuration overview
 #  
 # ((Internet)) --- [eth0]
 # ((LAN))      --- [eth1] > [USB]
@@ -13,10 +17,10 @@ set -eu
 #    USB: eth0
 #        * Internet access. You're on your own
 
-# STEP 1 !!! 
-# configure Internet access, we'll neet to install some basic tools.
-# Default password for root is root / Default password for alarm user is alarm
+# 
+# check your internet connection, as we need to download prerequisites
 
+# We add alarm user for sudoers as i friggin couldnt fix nobody to use makepkg
 SUDOERS=/etc/sudoers
 chmod 0640 $SUDOERS
 echo "alarm        ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
@@ -34,6 +38,7 @@ workdir=/tmp/install_yaourt
 
 rm -rf "$workdir"
 mkdir -p "$workdir"
+chown alarm -R "$workdir"
 
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
@@ -46,7 +51,7 @@ cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
 tar -zxf yaourt.tar.gz
 cd yaourt
-sudo -u alarm makepkg -s --noconfir
+sudo -u alarm makepkg -s --noconfirm
 makepkgpacman -U --noconfirm yaourt-*.pkg.tar.xz
 
 ## Setup the hardware random number generator
