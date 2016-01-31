@@ -21,6 +21,7 @@ set -eu
 # check your internet connection, as we need to download prerequisites
 
 # We add alarm user for sudoers as i friggin couldnt fix nobody to use makepkg
+touch /etc/sudoers
 SUDOERS=/etc/sudoers
 chmod 0640 $SUDOERS
 echo "alarm        ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
