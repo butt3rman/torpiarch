@@ -1,5 +1,20 @@
 #!/bin/bash
 set -eu
+#  ___  ___  ___ _____ _   _
+# | _ \/ _ \| _ \_   _/_\ | | of ._ o  
+# |  _/ (_) |   / | |/ _ \| |__  |_)|  
+# |_|  \___/|_|_\ |_/_/ \_\____| |
+#
+# Licensed GPLv3
+#
+# (c) 2013 the grugq <the.grugq@gmail.com>
+
+# See the README.md for indepth details.
+#
+# Based on the RaspberryPi Arch image from here:
+#  http://www.raspberrypi.org/downloads
+# specifically:
+#  http://archlinuxarm.org/os/rpi/archlinux-hf-2013-06-15.img.zip
 
 # PORTAL configuration overview
 #  
@@ -7,11 +22,13 @@ set -eu
 #   eth1: 172.16.0.1
 #        * anything from here can only reach 9050 (Tor proxy) or,
 #        * the transparent Tor proxy 
-#    USB: eth0
+#    USB: ???.
 #        * Internet access. You're on your own
+#        * No services exposed here
 
 # STEP 1 !!! 
 #   configure Internet access, we'll neet to install some basic tools.
+
 
 # update pacman
 pacman -Syu --needed --noconfirm
@@ -33,6 +50,7 @@ setfacl -d --set u::rwx,g::rwx,o::- "$workdir"
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
 tar -zxf package-query.tar.gz
+chmod -R g+w package-query
 cd package-query
 sudo -u nobody makepkg -s --noconfirm
 pacman -U --noconfirm package-query-*.pkg.tar.xz
@@ -40,6 +58,7 @@ pacman -U --noconfirm package-query-*.pkg.tar.xz
 cd "$workdir"
 curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
 tar -zxf yaourt.tar.gz
+chmod -R g+w yaourt
 cd yaourt
 sudo -u nobody makepkg -s --noconfirm
 pacman -U --noconfirm yaourt-*.pkg.tar.xz
