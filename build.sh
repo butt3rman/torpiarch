@@ -110,7 +110,7 @@ __TORRC__
 
 #
 ## Enable eth0 - to get dhcp lease from router
-cat > /etc/netctl/ethernet-dhcp << __ETHCONF1__
+cat > /etc/netctl/ethernetdhcp << __ETHCONF1__
 Interface=eth0
 Connection=ethernet
 IP=dhcp
@@ -148,8 +148,8 @@ __ETHRC__
 
 systemctl enable network.service
 
-netctl enable ethernet-dhcp
-netctl reenable ethernet-dhcp
+netctl enable ethernetdhcp
+netctl reenable ethernetdhcp
 # should already be enabled
 systemctl enable ntpd.service
 
