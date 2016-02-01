@@ -26,7 +26,7 @@ sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist.new
 echo -en "\nRanking the mirrors. Please wait...\n"
 rankmirrors -n 6 /etc/pacman.d/mirrorlist.new > /etc/pacman.d/mirrorlist
 pacman -Syy --needed --noconfirm
-pacman -S aria2
+pacman -S aria2 --needed --noconfirm
 echo "OK"
 cat > /etc/pacman.conf << __PACMAN__
 [options]
