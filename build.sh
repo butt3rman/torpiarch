@@ -88,7 +88,7 @@ else
   cd yaourt
   sudo -u alarm makepkg -s --noconfirm
   pacman -U --noconfirm yaourt-*.pkg.tar.xz
-if  
+fi 
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
