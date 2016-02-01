@@ -63,31 +63,34 @@ chmod 0440 $SUDOERS
 pacman -Syu --needed --noconfirm
 pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
+
 verify=$(which yaourt)
-if [ "$verify" -eq "/usr/bin/yaourt" ] || [ "$verify" -eq "/usr/sbin/yaourt" ]
-then
-  echo '-> [OK] Yaourt is installed ...'
-else
-  echo '-> Yaourt is not installed. :( '
-  echo '-> Installing Yaourt'
-  workdir=/tmp/install_yaourt
-  rm -rf "$workdir"
-  mkdir -p "$workdir"
-  chown alarm -R "$workdir"
-  cd "$workdir"
-  curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
-  curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
-  tar -zxf package-query.tar.gz
-  tar -zxf yaourt.tar.gz
-  chown alarm -R "$workdir"
-  cd package-query
-  sudo -u alarm makepkg -s --noconfirm
-  pacman -U --noconfirm package-query-*.pkg.tar.xz
-  cd "$workdir"
-  cd yaourt
-  sudo -u alarm makepkg -s --noconfirm
-  pacman -U --noconfirm yaourt-*.pkg.tar.xz
-fi 
+
+if [ -z ${verify} ]; then
+  # if git is not in path fall back to /usr/local
+  if [ -f /usr/bin/git ] || [-f /usr/sbin/git ]; then
+    echo "YAOURT is already installed"
+  else
+    echo "You don't have YAOURT installed, Installing YAOURT."
+    workdir=/tmp/install_yaourt
+    rm -rf "$workdir"
+    mkdir -p "$workdir"
+    chown alarm -R "$workdir"
+    cd "$workdir"
+    curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
+    curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
+    tar -zxf package-query.tar.gz
+    tar -zxf yaourt.tar.gz
+    chown alarm -R "$workdir"
+    cd package-query
+    sudo -u alarm makepkg -s --noconfirm
+    pacman -U --noconfirm package-query-*.pkg.tar.xz
+    cd "$workdir"
+    cd yaourt
+    sudo -u alarm makepkg -s --noconfirm
+    pacman -U --noconfirm yaourt-*.pkg.tar.xz
+  fi
+fi
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
