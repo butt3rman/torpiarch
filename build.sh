@@ -60,7 +60,7 @@ echo "alarm        ALL=(ALL) NOPASSWD: ALL" >> $SUDOERS
 chmod 0440 $SUDOERS
 
 # update pacman
-pacman -Syu --needed --noconfirm
+pacman -Su --needed --noconfirm
 pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
 verify=$(whch yaourt 2>&1)
