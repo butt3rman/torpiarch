@@ -63,15 +63,13 @@ chmod 0440 $SUDOERS
 pacman -Syu --needed --noconfirm
 pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
-
-verify=$(which yaourt)
-
-if [ -z ${verify} ]; then
-  if [ -f /usr/bin/yaourt ] || [-f /usr/sbin/yaourt ]; then
-    echo "YAOURT is already installed"
-  else
-    echo "You don't have YAOURT installed, Installing YAOURT."
-    workdir=/tmp/install_yaourt
+verify=$(whch yaourt 2>&1)
+workdir=/tmp/install_yaourt
+if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/bin/yaourt" ];
+then
+    echo "YAOURT exists"
+else
+    echo "Installing YAOURT"
     rm -rf "$workdir"
     mkdir -p "$workdir"
     chown alarm -R "$workdir"
@@ -88,7 +86,6 @@ if [ -z ${verify} ]; then
     cd yaourt
     sudo -u alarm makepkg -s --noconfirm
     pacman -U --noconfirm yaourt-*.pkg.tar.xz
-  fi
 fi
 
 ## Setup the hardware random number generator
