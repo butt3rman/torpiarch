@@ -64,7 +64,7 @@ pacman -Syu --needed --noconfirm
 pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
 verify=$(which yaourt)
-if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/sbin/yaourt" ]
+if [ "$verify" -eq "/usr/bin/yaourt" ] || [ "$verify" -eq "/usr/sbin/yaourt" ]
 then
   echo '-> [OK] Yaourt is installed ...'
 else
