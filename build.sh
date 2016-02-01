@@ -67,8 +67,7 @@ pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof 
 verify=$(which yaourt)
 
 if [ -z ${verify} ]; then
-  # if git is not in path fall back to /usr/local
-  if [ -f /usr/bin/git ] || [-f /usr/sbin/git ]; then
+  if [ -f /usr/bin/yaourt ] || [-f /usr/sbin/yaourt ]; then
     echo "YAOURT is already installed"
   else
     echo "You don't have YAOURT installed, Installing YAOURT."
