@@ -23,7 +23,7 @@ ping -q -w 1 -c 1 google.fr > /dev/null && echo "OK" || (echo "Your Internet see
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 curl -o /etc/pacman.d/mirrorlist.new https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/master/core/pacman-mirrorlist/mirrorlist
 sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist.new
-echo -en "\nRanking the mirrors. Please wait... (This may take a while)"
+echo -en "\nRanking the mirrors. Please wait...\n"
 rankmirrors -n 6 /etc/pacman.d/mirrorlist.new > /etc/pacman.d/mirrorlist
 pacman -Syy --needed --noconfirm
 pacman -S aria2
