@@ -28,33 +28,34 @@ chmod 0440 $SUDOERS
 
 # update pacman
 pacman -Syu --needed --noconfirm
-pacman -S --needed --noconfirm base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo rng-tools
+pacman -S --needed --noconfirm base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
 #Verifica se yaourt esta instalado
 verify=$(which yaourt)
-if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/sbin/yaourt" ]; then
-echo '-> [OK] Yaourt is installed ...'
+if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/sbin/yaourt" ]; 
+then
+  echo '-> [OK] Yaourt is installed ...'
 else
-echo '-> Yaourt is not installed. :( '
-echo '-> Installing Yaourt'
-workdir=/tmp/install_yaourt
-rm -rf "$workdir"
-mkdir -p "$workdir"
-chown alarm -R "$workdir"
-cd "$workdir"
-curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
-curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
-tar -zxf package-query.tar.gz
-tar -zxf yaourt.tar.gz
-chown alarm -R "$workdir"
-cd package-query
-sudo -u alarm makepkg -s --noconfirm
-pacman -U --noconfirm package-query-*.pkg.tar.xz
-cd "$workdir"
-cd yaourt
-sudo -u alarm makepkg -s --noconfirm
-pacman -U --noconfirm yaourt-*.pkg.tar.xz
-fi
+  echo '-> Yaourt is not installed. :( '
+  echo '-> Installing Yaourt'
+  workdir=/tmp/install_yaourt
+  rm -rf "$workdir"
+  mkdir -p "$workdir"
+  chown alarm -R "$workdir"
+  cd "$workdir"
+  curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz
+  curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz
+  tar -zxf package-query.tar.gz
+  tar -zxf yaourt.tar.gz
+  chown alarm -R "$workdir"
+  cd package-query
+  sudo -u alarm makepkg -s --noconfirm
+  pacman -U --noconfirm package-query-*.pkg.tar.xz
+  cd "$workdir"
+  cd yaourt
+  sudo -u alarm makepkg -s --noconfirm
+  pacman -U --noconfirm yaourt-*.pkg.tar.xz
+if  
 
 ## Setup the hardware random number generator
 echo "bcm2708-rng" > /etc/modules-load.d/bcm2708-rng.conf
