@@ -63,13 +63,13 @@ chmod 0440 $SUDOERS
 pacman -Su --needed --noconfirm
 pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
-verify=$(whch yaourt 2>&1)
-workdir=/tmp/install_yaourt
+verify=$(which yaourt 2>&1)
 if [ "$verify" == "/usr/bin/yaourt" ] || [ "$verify" == "/usr/bin/yaourt" ];
 then
     echo "YAOURT exists"
 else
     echo "Installing YAOURT"
+    workdir=/tmp/install_yaourt
     rm -rf "$workdir"
     mkdir -p "$workdir"
     chown alarm -R "$workdir"
@@ -166,7 +166,7 @@ Type=oneshot
 RemainAfterExit=yes
 EnvironmentFile=/etc/conf.d/internet
 ExecStart=/sbin/ip link set dev \${interface} up
-ExecStart=/sbin/ip addr add \${address}/\${netmask} broadcast \${broadcast} dev \${interface}
+#ExecStart=/sbin/ip addr add \${address}/\${netmask} broadcast \${broadcast} dev \${interface}
 
 ExecStop=/sbin/ip addr flush dev \${interface}
 ExecStop=/sbin/ip link set dev \${interface} down
