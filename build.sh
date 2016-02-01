@@ -18,6 +18,36 @@ set -eu
 #        * Internet access. You're on your own
 
 # check your internet connection, as we need to download prerequisites
+mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+curl -o /etc/pacman.d/mirrorlist.new https://www.archlinux.org/mirrorlist/all/
+sed '/^#\S/ s|#||' /etc/pacman.d/mirrorlist.new
+rankmirrors -n 6 /etc/pacman.d/mirrorlist.new > /etc/pacman.d/mirrorlist
+pacman -Syy --needed --noconfirm
+pacman -S aria2
+
+cat > /etc/pacman.conf << __PACMAN__
+[options]
+HoldPkg     = pacman glibc
+Architecture = armv6h
+CheckSpace
+SigLevel = Never
+XferCommand = /usr/bin/aria2c --allow-overwrite=true --continue=true --file-allocation=none --log-level=error --max-tries=2 --max-connection-per-server=2 --max-file-not-found=5 --min-split-size=5M --no-conf --remote-time=true --summary-interval=60 --timeout=5 --dir=/ --out %o %u
+
+[core]
+Include = /etc/pacman.d/mirrorlist
+
+[extra]
+Include = /etc/pacman.d/mirrorlist
+
+[community]
+Include = /etc/pacman.d/mirrorlist
+
+[alarm]
+Include = /etc/pacman.d/mirrorlist
+
+[aur]
+Include = /etc/pacman.d/mirrorlist
+__PACMAN__
 
 # We add alarm user for sudoers as i friggin couldnt fix nobody to use makepkg
 touch /etc/sudoers
@@ -28,7 +58,7 @@ chmod 0440 $SUDOERS
 
 # update pacman
 pacman -Syu --needed --noconfirm
-pacman -S --needed --noconfirm base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
+pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
 #Verifica se yaourt esta instalado
 verify=$(which yaourt)
