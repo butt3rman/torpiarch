@@ -34,7 +34,7 @@ HoldPkg     = pacman glibc
 Architecture = armv6h
 CheckSpace
 SigLevel = Never
-XferCommand = /usr/bin/aria2c --allow-overwrite=true --continue=true --file-allocation=none --log-level=error --max-tries=2 --max-connection-per-server=2 --max-file-not-found=5 --min-split-size=5M --no-conf --remote-time=true --summary-interval=60 --timeout=5 --dir=/ --out %o %u
+XferCommand = /usr/bin/aria2c --allow-overwrite=true --continue=true --file-allocation=none --log-level=error --max-tries=10 --max-connection-per-server=10 --max-file-not-found=5 --min-split-size=5M --no-conf --remote-time=true --summary-interval=60 --timeout=10 --dir=/ --out %o %u
 
 [core]
 Include = /etc/pacman.d/mirrorlist
