@@ -63,7 +63,7 @@ chmod 0440 $SUDOERS
 pacman -Su --needed --noconfirm
 pacman -S --needed --noconfirm git base-devel zsh grml-zsh-config vim htop lsof strace tor dnsmasq polipo ntp rng-tools
 
-if [ -d "/usr/bin/yaourt" ] || [ -d "/usr/bin/yaourt" ];
+if [ -d "/usr/bin/yaourt" ] || [ -d "/usr/bin/yaourt" ]
 then
     echo "YAOURT exists"
 else
