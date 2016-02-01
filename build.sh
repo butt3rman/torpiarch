@@ -20,7 +20,7 @@ set -eu
 # check your internet connection, as we need to download prerequisites
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 curl -o /etc/pacman.d/mirrorlist.new https://www.archlinux.org/mirrorlist/all/
-sed '/^#\S/ s|#||' /etc/pacman.d/mirrorlist.new
+sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist.new
 rankmirrors -n 6 /etc/pacman.d/mirrorlist.new > /etc/pacman.d/mirrorlist
 pacman -Syy --needed --noconfirm
 pacman -S aria2
