@@ -21,6 +21,7 @@ set -eu
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 curl -o /etc/pacman.d/mirrorlist.new https://www.archlinux.org/mirrorlist/all/
 sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist.new
+echo -en "\nRanking the mirrors. Please wait..."
 rankmirrors -n 6 /etc/pacman.d/mirrorlist.new > /etc/pacman.d/mirrorlist
 pacman -Syy --needed --noconfirm
 pacman -S aria2
